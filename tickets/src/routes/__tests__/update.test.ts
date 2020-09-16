@@ -3,6 +3,7 @@ import faker from 'faker'
 import mongoose from 'mongoose'
 import { app } from '../../app'
 import { Ticket } from '../../models/Ticket'
+import { natsWrapper } from '../../nats-wrapper';
 
 let resource: any, resourceId: string, updates: any, cookie: string
 
@@ -64,4 +65,9 @@ it('returns a 200 on valid body', async () => {
 it('returns updated resource on valid body', async () => {
   const res = await run()
   expect(res.body).toMatchObject(updates)
+})
+
+it('should publish event on valid inputs', async () => {
+  await run()
+  expect(natsWrapper.client.publish).toHaveBeenCalled()
 })

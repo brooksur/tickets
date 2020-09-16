@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: brooksur/tickets-auth
+          image: brooksbenson03/tickets-auth
           env:
             - name: JWT_KEY
               valueFrom:

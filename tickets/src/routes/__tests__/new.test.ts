@@ -2,6 +2,7 @@ import request from 'supertest'
 import faker from 'faker'
 import { app } from '../../app'
 import { Ticket } from '../../models/Ticket'
+import { natsWrapper } from '../../nats-wrapper';
 
 let cookie: string, title: string, price: number
 
@@ -55,4 +56,9 @@ it('should save a record to the database on valid inputs', async () => {
   await run()
   const ticket = await Ticket.findOne({ title, price })
   expect(ticket).toBeTruthy()
+})
+
+it('should publish event on valid inputs', async () => {
+  await run()
+  expect(natsWrapper.client.publish).toHaveBeenCalled()
 })

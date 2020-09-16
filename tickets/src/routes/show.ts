@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { Ticket } from '../models/Ticket'
-import { NotFoundError } from '@bb-tickets/common'
+import { NotFoundError } from '@brooksbenson03-tickets/common'
 
 const router = Router()
 

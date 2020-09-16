@@ -6,8 +6,10 @@ import {
   requireAuth,
   NotAuthorizedError,
   currentUser
-} from '@bb-tickets/common'
+} from '@brooksbenson03-tickets/common'
 import { Ticket } from '../models/Ticket'
+import { natsWrapper } from '../nats-wrapper';
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
 
 const router = Router()
 
@@ -31,6 +33,12 @@ router.put(
     if (userId !== ticket.userId) throw new NotAuthorizedError()
     ticket.set({ title, price })
     await ticket.save()
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId
+    })
     return res.send(ticket)
   }
 )

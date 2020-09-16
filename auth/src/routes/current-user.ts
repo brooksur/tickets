@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-import { currentUser } from '@bb-tickets/common'
+import { currentUser } from '@brooksbenson03-tickets/common'
 
 const router = express.Router()
 
