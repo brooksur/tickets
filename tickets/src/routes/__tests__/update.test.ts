@@ -71,3 +71,11 @@ it('should publish event on valid inputs', async () => {
   await run()
   expect(natsWrapper.client.publish).toHaveBeenCalled()
 })
+
+it('should return 400 when resource is reserved', async () => {
+  const ticket = await Ticket.findOne({})
+  ticket?.set({ orderId: faker.random.uuid() })
+  await ticket?.save()
+  const res = await run()
+  expect(res.status).toBe(400)
+})

@@ -1,14 +1,17 @@
 import request from 'supertest';
 import faker from 'faker';
+import mongoose from 'mongoose';
 import { app } from '../../app';
 import { Ticket, TicketDoc } from '../../models/ticket';
 import { Order, OrderStatus } from '../../models/order';
+import { natsWrapper } from '../../nats-wrapper';
 
 let cookie: string, ticket: TicketDoc, ticketId: string
 
 beforeEach(async () => {
   cookie = global.getCookie()
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: faker.random.word(),
     price: faker.random.number()
   })
@@ -65,3 +68,7 @@ it('should save order to database when request is valid', async () => {
   expect(orders).toHaveLength(1)
 })
 
+it('should publish event when request is valid', async () => {
+  await run()
+  expect(natsWrapper.client.publish).toHaveBeenCalled()
+})

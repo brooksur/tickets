@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import { app } from './app'
 import { natsWrapper } from './nats-wrapper';
+import { TicketCreatedListener } from './events/listeners/ticket-created-listener';
+import { TicketUpdatedListener } from './events/listeners/ticket-updated-listener';
 
 const start = async () => {
   const { JWT_KEY, MONGO_URI, NATS_CLIENT_ID, NATS_URL, NATS_CLUSTER_ID } = process.env
@@ -34,6 +36,10 @@ const start = async () => {
     })
     process.on('SIGINT', () => natsWrapper.client.close())
     process.on('SIGTERM', () => natsWrapper.client.close())
+
+    // connect NATS listeners
+    new TicketCreatedListener(natsWrapper.client).listen()
+    new TicketUpdatedListener(natsWrapper.client).listen()
 
     // connect to DB
     await mongoose.connect(MONGO_URI, {

@@ -1,11 +1,11 @@
-import { Router, Request, Response } from 'express'
+ import { Router, Request, Response } from 'express'
 import { body } from 'express-validator'
 import {
   validateRequest,
   NotFoundError,
   requireAuth,
   NotAuthorizedError,
-  currentUser
+  currentUser, BadRequestError
 } from '@brooksbenson03-tickets/common'
 import { Ticket } from '../models/Ticket'
 import { natsWrapper } from '../nats-wrapper';
@@ -30,6 +30,7 @@ router.put(
     const { title, price } = req.body
     const ticket = await Ticket.findById(ticketId)
     if (!ticket) throw new NotFoundError()
+    if (ticket.orderId) throw new BadRequestError('Ticket is reserved')
     if (userId !== ticket.userId) throw new NotAuthorizedError()
     ticket.set({ title, price })
     await ticket.save()
@@ -37,7 +38,8 @@ router.put(
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,
-      userId: ticket.userId
+      userId: ticket.userId,
+      version: ticket.version
     })
     return res.send(ticket)
   }

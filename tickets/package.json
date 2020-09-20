@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@brooksbenson03-tickets/common": "^1.0.6",
+    "@brooksbenson03-tickets/common": "^1.0.13",
     "@types/cookie-session": "^2.0.41",
     "@types/express": "^4.17.7",
     "@types/jsonwebtoken": "^8.5.0",
@@ -29,6 +29,7 @@
     "express-validator": "^6.6.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.27",
+    "mongoose-update-if-current": "^1.4.0",
     "ts-node-dev": "^1.0.0-pre.56",
     "typescript": "^3.9.7"
   },
@@ -38,13 +39,13 @@
     "@types/supertest": "^2.0.10",
     "faker": "^4.1.0",
     "jest": "^26.3.0",
+    "mongodb-memory-server": "^6.7.6",
     "supertest": "^4.0.2",
-    "ts-jest": "^26.2.0",
-    "mongodb-memory-server": "^6.6.3"
+    "ts-jest": "^26.2.0"
   },
   "config": {
     "mongodbMemoryServer": {
-      "debug": "1"
+      "version": "4.4.1"
     }
   }
 }

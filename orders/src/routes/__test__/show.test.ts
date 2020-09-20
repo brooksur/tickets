@@ -1,10 +1,12 @@
 import request from 'supertest';
 import faker from 'faker';
+import mongoose from 'mongoose';
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
 
 it('fetches the order', async () => {
   const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: faker.random.word(),
     price: faker.random.number()
   }).save()
@@ -17,6 +19,7 @@ it('fetches the order', async () => {
 
 it('returns an error if one user tries to fetch another users order', async () => {
   const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: faker.random.word(),
     price: faker.random.number()
   }).save()
