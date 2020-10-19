@@ -18,7 +18,7 @@ spec:
           env:
             - name: JWT_KEY
               valueFrom:
-                secretKeyRef:
+                secretKeyRef: # kubectl create secret generic jwt-secret --from-literal={KEY}={VALUE}
                   name: jwt-secret
                   key: JWT_KEY
             - name: MONGO_URI
